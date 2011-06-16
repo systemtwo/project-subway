@@ -15,17 +15,20 @@ Each client is also a server. Servers broadcast their precense, and are then con
 Sync Protocol
 -------------
 Packets look like this: 
+
  - Header: single byte
  - Length: short (2 bytes)
  - Data: varies (up to 255*2 bytes)
 
 Handshake:
+
  - Header: 0x01
  - Data:
   - Version: 2 bytes
   - More tpd
 
 Resource:
+
  - Header: 0x02
  - Data:
   - Name Hash (sha1): 128 bytes
