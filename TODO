@@ -2,3 +2,4 @@ Add Broadcasting and node detection
 Add Proxy interface
 Have the DB be lookup'd (Right now, it does nothing)
 Also Have Ip-> UUID in the DB as well and have files listed under a UUID
+Fix the file Extention showing up in the db

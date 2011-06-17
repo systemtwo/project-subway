@@ -15,11 +15,12 @@ def db_lookup(filename, uid):
 	db = safeevalnew.safe_eval(dbstr)
 	print db[uid]
 	print filename
-	if (db[uid].has_key(filename)):
-		return 0
+	if (db[uid].has_key(filename + ".png")):
+		print "IN DB"
+		return 1
 	else:
 		print "Not in db"
-		return 1
+		return 0
 
 
 #Variables
@@ -75,6 +76,7 @@ for i in range(1):
 		#Send Filename in hash as request
 		#Lookup to see if the file is attached to this uid
 		if (db_lookup(fhash, nodeuid)):
+			print "Sending File Request..."
 			s.send(fhash)
 
 
