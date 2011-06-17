@@ -50,6 +50,32 @@ while 1:
 	clientsocket, address = s.accept()
 	print "Socket Accepted"
 	clientsocket.send(uid)
+
+	#Confirm uid
+	if (clientsocket.recv(10) == "UID_GOT_IT"):
+		print "Confirmed uid"
+	else:
+		print "UID NOT CONFIRMED"
+
+
+	#Send DB Size
+	dbstr = str(db)
+	dblen = len(dbstr)
+	print "Sending DB_SIZE...", dblen
+	clientsocket.send(str(127))
+	print "Sent"
+
+	#Recv Confirm DB Size
+	print "Waiting for DB_GOT_SIZE"
+
+	if (clientsocket.recv(len("DB_GOT_SIZE")) == "DB_GOT_SIZE"):
+		print "Client Correct Responce"
+		clientsocket.send(dbstr)
+	else:
+		print "Client Wrong DB Response"
+		clientsocket.close()
+
+
 	fname = clientsocket.recv(4096) # Recieve Filename
 	#fname = "cache/" + fname
 	print fname
@@ -65,6 +91,7 @@ while 1:
 				#print "Found it!", i
 				fname = "cache/" + i
 				f = open(fname, "r")
+
 
 	#Send File Size
 	clientsocket.send(str(os.path.getsize(fname)))
