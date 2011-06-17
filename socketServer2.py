@@ -14,14 +14,16 @@ def gen_conf():
 	f.write(uid)
 	f.close()
 
-def build_db():
+def build_db(uid):
 	db = {}
+	minidb = {}
 	dirlist =  os.listdir("cache/")
 	for i in dirlist:
 		item = os.stat("cache/" + i)
 		#Should be {"Hash":{"date-modified":7128371293}, "Hash2":{"da...
-		minidict = {"date-modified": item.st_mtime}
-		db[str(i)] = minidict
+		microdict = {"date-modified": item.st_mtime}
+		minidb[str(i)] = microdict
+		db[uid] = minidb
 	return db
 
 
@@ -34,7 +36,7 @@ except IOError:
 
 #Variables
 uid = open("conf", "r").read()
-db  = build_db()
+db  = build_db(uid)
 print db
 
 
