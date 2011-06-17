@@ -30,7 +30,7 @@ print "Running with UUID:", uid
 
 print socket.gethostname()
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind(("127.0.0.1", 7000))
+s.bind((socket.gethostname(), 7000))
 s.listen(5)
 
 while 1:
