@@ -1,5 +1,8 @@
 #! /usr/bin/env python
 
+#TODO
+# Fix the DB so that it does not have the file extention
+
 import socket
 import os
 import uuid

@@ -6,6 +6,22 @@ import sys
 import hashlib
 import safeevalnew
 
+def db_lookup(filename, uid):
+	#See if the DB has the file
+	print "Testing hash against DB to see if it is attached to this uid"
+	dbf = open("db", "r")
+	dbstr = dbf.read()
+	dbf.close()
+	db = safeevalnew.safe_eval(dbstr)
+	print db[uid]
+	print filename
+	if (db[uid].has_key(filename)):
+		return 0
+	else:
+		print "Not in db"
+		return 1
+
+
 #Variables
 UID_LENGTH = 46
 
@@ -57,7 +73,10 @@ for i in range(1):
 		g.close()
 
 		#Send Filename in hash as request
-		s.send(fhash)
+		#Lookup to see if the file is attached to this uid
+		if (db_lookup(fhash, nodeuid)):
+			s.send(fhash)
+
 
 		#Recieve Size
 		size = s.recv(1000000)
