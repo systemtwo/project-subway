@@ -14,6 +14,17 @@ def gen_conf():
 	f.write(uid)
 	f.close()
 
+def build_db():
+	db = {}
+	dirlist =  os.listdir("cache/")
+	for i in dirlist:
+		item = os.stat("cache/" + i)
+		#Should be {"Hash":{"date-modified":7128371293}, "Hash2":{"da...
+		minidict = {"date-modified": item.st_mtime}
+		db[str(i)] = minidict
+	return db
+
+
 #Get UUID Or Create
 try:
 	f = open("conf", "r")
@@ -23,6 +34,8 @@ except IOError:
 
 #Variables
 uid = open("conf", "r").read()
+db  = build_db()
+print db
 
 
 

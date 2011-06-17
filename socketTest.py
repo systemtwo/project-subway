@@ -26,7 +26,10 @@ for i in range(1):
 		s.connect((socket.gethostname(), 7000))
 
 		#Recieve UID
-		print "Connected to:", s.recv(UID_LENGTH)
+		nodeuid = s.recv(UID_LENGTH)
+		print "Connected to:", nodeuid 
+
+		#Recieve DB
 
 		#Send Filename in hash as request
 		s.send(fhash)
