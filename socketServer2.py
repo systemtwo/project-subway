@@ -62,7 +62,7 @@ while 1:
 	dbstr = str(db)
 	dblen = len(dbstr)
 	print "Sending DB_SIZE...", dblen
-	clientsocket.send(str(127))
+	clientsocket.send(str(dblen))
 	print "Sent"
 
 	#Recv Confirm DB Size
@@ -100,5 +100,6 @@ while 1:
 		clientsocket.send(f.read())
 		print "Sent!", address
 		print "Done."
+		print " " #Empty Line
 	clientsocket.close()
 

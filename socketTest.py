@@ -49,6 +49,12 @@ for i in range(1):
 		dbstr = s.recv(int(dbsize))
 		print "DB Sync'd"
 		print "DB_DATA:", dbstr
+		print "Turning DB_DATA to usable form..."
+		db = safeevalnew.safe_eval(dbstr)
+		print "Saving DB"
+		g = open ("db", "w")
+		g.write(dbstr)
+		g.close()
 
 		#Send Filename in hash as request
 		s.send(fhash)
