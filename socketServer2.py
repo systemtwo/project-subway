@@ -59,5 +59,6 @@ while 1:
 		#Correct Responce
 		clientsocket.send(f.read())
 		print "Sent!", address
+		print "Done."
 	clientsocket.close()
 
