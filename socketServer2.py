@@ -45,9 +45,9 @@ except IOError:
 uid = open("conf", "r").read()
 db  = build_db(uid)
 ip  = socket.gethostbyname(socket.gethostname())
+
+
 print_info(uid)
-
-
 print socket.gethostname()
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((socket.gethostname(), 7000))

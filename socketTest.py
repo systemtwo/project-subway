@@ -15,7 +15,7 @@ def db_lookup(filename, uid):
 	db = safeevalnew.safe_eval(dbstr)
 	print db[uid]
 	print filename
-	if (db[uid].has_key(filename + ".png")):
+	if (db[uid].has_key(filename)):
 		print "IN DB"
 		return 1
 	else:
@@ -30,7 +30,7 @@ for i in range(1):
 	try:
 		fname = "dice.png"
 
-		hasher = hashlib.sha1()
+		hasher = hashlib.sha256()
 		hasher.update(fname)
 		fhash = hasher.hexdigest()
 
