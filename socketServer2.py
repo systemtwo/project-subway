@@ -29,6 +29,10 @@ def build_db(uid):
 		db[uid] = minidb
 	return db
 
+def print_info(uid):
+	print "Running on:\t\t", socket.gethostname(), "-", socket.gethostbyname(socket.gethostname())
+	print "Running with UUID:\t", uid
+
 
 #Get UUID Or Create
 try:
@@ -40,11 +44,9 @@ except IOError:
 #Variables
 uid = open("conf", "r").read()
 db  = build_db(uid)
-print db
+ip  = socket.gethostbyname(socket.gethostname())
+print_info(uid)
 
-
-
-print "Running with UUID:", uid
 
 print socket.gethostname()
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
