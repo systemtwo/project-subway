@@ -136,6 +136,8 @@ while 1:
 	elif (req == "FILE_REQ"):
 		print "Got call for File"
 		send_file(clientsocket)
+	elif (req == "IPDB_REQ"):
+		pass
 
 
 
