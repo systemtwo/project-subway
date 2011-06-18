@@ -33,6 +33,74 @@ def print_info(uid):
 	print "Running on:\t\t", socket.gethostname(), "-", socket.gethostbyname(socket.gethostname())
 	print "Running with UUID:\t", uid
 
+def send_uid(clientsocket):
+	#Send this node's uid to client
+	clientsocket.send(uid)
+
+	#Confirm uid
+	if (clientsocket.recv(10) == "UID_GOT_IT"):
+		print "Confirmed uid"
+	else:
+		print "UID NOT CONFIRMED"
+
+	clientsocket.close()
+	print ""
+
+def send_db(clientsocket, db):
+	#Send DB Size
+	dbstr = str(db)
+	dblen = len(dbstr)
+	print "Sending DB_SIZE...", dblen
+	clientsocket.send(str(dblen))
+	print "Sent"
+
+	#Recv Confirm DB Size
+	print "Waiting for DB_GOT_SIZE"
+
+	if (clientsocket.recv(len("DB_GOT_SIZE")) == "DB_GOT_SIZE"):
+		print "Client Correct Responce"
+		clientsocket.send(dbstr)
+	else:
+		print "Client Wrong DB Response"
+		clientsocket.close()
+
+	clientsocket.close()
+	print ""
+	
+
+def send_file(clientsocket):
+	clientsocket.send("GO_AHEAD")
+	fname = clientsocket.recv(4096) # Recieve Filename
+	#fname = "cache/" + fname
+	print fname
+
+	#This chunk finds and appends a file extention (Macs, sometimes if you touch the file)
+	try:
+		print "Trying to open..."
+		f = open(fname)
+	except IOError:
+		dirlist =  os.listdir("cache/")
+		for i in dirlist:
+			if (i.find(fname) > -1):
+				#print "Found it!", i
+				fname = "cache/" + i
+				f = open(fname, "r")
+
+
+	#Send File Size
+	clientsocket.send(str(os.path.getsize(fname)))
+	if (clientsocket.recv(8) == "GOT_SIZE"):
+		#Correct Responce
+		clientsocket.send(f.read())
+		print "Sent!", address
+		print "Done."
+		print " " #Empty Line
+	clientsocket.close()
+	print ""
+
+
+
+
 
 #Get UUID Or Create
 try:
@@ -56,57 +124,19 @@ s.listen(5)
 while 1:
 	clientsocket, address = s.accept()
 	print "Socket Accepted"
-	clientsocket.send(uid)
 
-	#Confirm uid
-	if (clientsocket.recv(10) == "UID_GOT_IT"):
-		print "Confirmed uid"
-	else:
-		print "UID NOT CONFIRMED"
-
-
-	#Send DB Size
-	dbstr = str(db)
-	dblen = len(dbstr)
-	print "Sending DB_SIZE...", dblen
-	clientsocket.send(str(dblen))
-	print "Sent"
-
-	#Recv Confirm DB Size
-	print "Waiting for DB_GOT_SIZE"
-
-	if (clientsocket.recv(len("DB_GOT_SIZE")) == "DB_GOT_SIZE"):
-		print "Client Correct Responce"
-		clientsocket.send(dbstr)
-	else:
-		print "Client Wrong DB Response"
-		clientsocket.close()
+	#Detect Requests
+	req = clientsocket.recv(1000000)
+	if (req == "UID_REQ"):
+		print "Got Call for UID"
+		send_uid(clientsocket)
+	elif (req == "DB_REQ"):
+		print "Got call for db"
+		send_db(clientsocket, db)
+	elif (req == "FILE_REQ"):
+		print "Got call for File"
+		send_file(clientsocket)
 
 
-	fname = clientsocket.recv(4096) # Recieve Filename
-	#fname = "cache/" + fname
-	print fname
 
-	#This chunk finds and appends a file extention (Macs) 
-	try:
-		print "Trying to open..."
-		f = open(fname)
-	except IOError:
-		dirlist =  os.listdir("cache/")
-		for i in dirlist:
-			if (i.find(fname) > -1):
-				#print "Found it!", i
-				fname = "cache/" + i
-				f = open(fname, "r")
-
-
-	#Send File Size
-	clientsocket.send(str(os.path.getsize(fname)))
-	if (clientsocket.recv(8) == "GOT_SIZE"):
-		#Correct Responce
-		clientsocket.send(f.read())
-		print "Sent!", address
-		print "Done."
-		print " " #Empty Line
-	clientsocket.close()
 
