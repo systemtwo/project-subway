@@ -86,8 +86,9 @@ def recv_file(s, fhash, nodeuid):
 	s.close()
 	print "Done"
 
-def db_cleanup():
+def db_cleanup(db):
 	#Deletes any entries older than two weeks
+	curtime = time.time()
 	pass
 
 def db_sync(newdb):
