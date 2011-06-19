@@ -5,9 +5,10 @@ import os
 import hashlib
 import shutil
 
-if (len(sys.argv) = 2):
+if (len(sys.argv) == 2):
 	path = sys.argv[1]
 	filename = os.path.basename(path)
+	print filename
 	hash = hashlib.sha256()
 	hash.update(filename)
 	hashhex = hash.hexdigest()

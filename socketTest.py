@@ -19,10 +19,10 @@ def db_lookup(filename, uid):
 	dbstr = dbf.read()
 	dbf.close()
 	db = safeevalnew.safe_eval(dbstr)
-	print db[filename]
-	print filename
+	#print db[filename]
+	#print filename
 	if (db[filename]["host"] == uid):
-		print "IN DB"
+		print "Found entry in DB"
 		return 1
 	else:
 		print "Not in db"
@@ -106,16 +106,23 @@ def db_sync(newdb):
 	print "Syncing old with recv'd DB"
 	#Update where newdb's date-modified is newer
 	inter = set(newdb.iterkeys()).intersection(set(olddb.iterkeys())) #Find common entries
+	#print inter
 	for i in inter:
 		if (olddb[i]["host"] == newdb[i]["host"]):
 			if (olddb[i]["date-modified"] < newdb[i]["date-modified"]):
+				print "Updating Old entry"
 				tempdb[i] = {"date-modified": newdb[i]["date-modified"], "host": newdb[i]["host"]}
 			elif (olddb[i]["date-modified"] >= newdb[i]["date-modified"]):
 				tempdb[i] = {"date-modified": olddb[i]["date-modified"], "host": newdb[i]["host"]}
 	
-	uninter = set(newdb.iterkeys()) - inter
+	c = set(newdb).union(set(olddb))
+	d = set(newdb).intersection(set(olddb))
+	uninter = c-d
+	#uninter = set(newdb.iterkeys()) - set(inter)
+	#print uninter
+	#print newdb
 	for i in uninter:
-		temp[i] = newdb[i]
+		tempdb[i] = newdb[i]
 		
 
 #Variables
