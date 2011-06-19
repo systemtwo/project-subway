@@ -17,17 +17,29 @@ def gen_conf():
 	f.write(uid)
 	f.close()
 
+#def build_db(uid):
+	#db = {}
+	#minidb = {}
+	#dirlist =  os.listdir("cache/")
+	#for i in dirlist:
+		#item = os.stat("cache/" + i)
+		#Should be {"Hash":{"date-modified":7128371293}, "Hash2":{"da...
+		#microdict = {"date-modified": item.st_mtime}
+		#minidb[str(i)] = microdict
+		#db[uid] = minidb
+	#return db
+
+
 def build_db(uid):
+	#Should be {"hash":{date-modified:"jfsdklf",host:uid}}
 	db = {}
-	minidb = {}
-	dirlist =  os.listdir("cache/")
+	dirlist = os.listdir("cache")
 	for i in dirlist:
 		item = os.stat("cache/" + i)
-		#Should be {"Hash":{"date-modified":7128371293}, "Hash2":{"da...
-		microdict = {"date-modified": item.st_mtime}
-		minidb[str(i)] = microdict
-		db[uid] = minidb
+		minidb = {"date-modified": item.st_mtime, "host": uid}
+		db[str(i)] = minidb
 	return db
+
 
 def print_info(uid):
 	print "Running on:\t\t", socket.gethostname(), "-", socket.gethostbyname(socket.gethostname())

@@ -19,9 +19,9 @@ def db_lookup(filename, uid):
 	dbstr = dbf.read()
 	dbf.close()
 	db = safeevalnew.safe_eval(dbstr)
-	print db[uid]
+	print db[filename]
 	print filename
-	if (db[uid].has_key(filename)):
+	if (db[filename]["host"] == uid):
 		print "IN DB"
 		return 1
 	else:
@@ -88,6 +88,10 @@ def recv_file(s, fhash, nodeuid):
 	f.write(i)
 	s.close()
 	print "Done"
+
+def db_cleanup():
+	#Deletes any entries older than two weeks
+	pass
 
 #Variables
 UID_LENGTH = 46
