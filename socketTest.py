@@ -58,10 +58,7 @@ def recv_db(s):
 	#print "DB_DATA:", dbstr
 	print "Turning DB_DATA to usable form..."
 	db = safeevalnew.safe_eval(dbstr)
-	print "Saving DB"
-	g = open ("db", "w")
-	g.write(dbstr)
-	g.close()
+	db_sync(db)
 
 def recv_file(s, fhash, nodeuid):
 	#Get the Go ahead (Sockets don't want to work if it doesn't respond)
@@ -92,6 +89,34 @@ def recv_file(s, fhash, nodeuid):
 def db_cleanup():
 	#Deletes any entries older than two weeks
 	pass
+
+def db_sync(newdb):
+	print "Opening old DB (Reading)"
+	tempdb = {}
+	try:
+		g = open ("db", "r")
+		olddb = safeevalnew.safe_eval(g.read())
+		g.close()
+	except IOError:
+		#File does not exist, so just dump all what you have in file
+		g = open ("db", "w")
+		g.write(str(db))
+		g.close
+		return 1
+	print "Syncing old with recv'd DB"
+	#Update where newdb's date-modified is newer
+	inter = set(newdb.iterkeys()).intersection(set(olddb.iterkeys())) #Find common entries
+	for i in inter:
+		if (olddb[i]["host"] == newdb[i]["host"]):
+			if (olddb[i]["date-modified"] < newdb[i]["date-modified"]):
+				tempdb[i] = {"date-modified": newdb[i]["date-modified"], "host": newdb[i]["host"]}
+			elif (olddb[i]["date-modified"] >= newdb[i]["date-modified"]):
+				tempdb[i] = {"date-modified": olddb[i]["date-modified"], "host": newdb[i]["host"]}
+	
+	uninter = set(newdb.iterkeys()) - inter
+	for i in uninter:
+		temp[i] = newdb[i]
+		
 
 #Variables
 UID_LENGTH = 46
