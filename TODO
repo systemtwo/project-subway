@@ -9,3 +9,4 @@ Change DB structure to
 Have the node respond a FOUND or NOT_FOUND if the file exists in cache
 Have the client delete entry in db if the node does not have the file
 New DB is flawed, change it to {hash:[{date-modified:342324, host:uid}{date-modified:38294, host:uid}]}?
+Add function to find out internet conditions, either by speedtest server or like ants (possitive feedback of downloads - ie. if there are lots of clients downloading, then download conditions must be good?)

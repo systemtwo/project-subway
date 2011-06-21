@@ -6,6 +6,7 @@
 import socket
 import os
 import uuid
+import time
 
 def client_thread(s):
 	s.send("Hello")
@@ -36,7 +37,7 @@ def build_db(uid):
 	dirlist = os.listdir("cache")
 	for i in dirlist:
 		item = os.stat("cache/" + i)
-		minidb = {"date-modified": item.st_mtime, "host": uid}
+		minidb = [{"date-modified": item.st_mtime, "host": uid}, {"date-modified": 37383302, "host": "otherhost"}]
 		db[str(i)] = minidb
 	return db
 
@@ -44,6 +45,7 @@ def build_db(uid):
 def print_info(uid):
 	print "Running on:\t\t", socket.gethostname(), "-", socket.gethostbyname(socket.gethostname())
 	print "Running with UUID:\t", uid
+	print time.strftime("%d %b %Y %H:%M:%S", time.localtime())
 
 def send_uid(clientsocket):
 	#Send this node's uid to client
@@ -128,7 +130,7 @@ ip  = socket.gethostbyname(socket.gethostname())
 
 
 print_info(uid)
-print socket.gethostname()
+#print socket.gethostname()
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((socket.gethostname(), 7000))
 s.listen(5)
@@ -136,6 +138,7 @@ s.listen(5)
 while 1:
 	clientsocket, address = s.accept()
 	print "Socket Accepted"
+	print time.strftime("%d %b %Y %H:%M:%S", time.localtime())
 
 	#Detect Requests
 	req = clientsocket.recv(1000000)

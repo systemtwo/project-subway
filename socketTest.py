@@ -21,12 +21,13 @@ def db_lookup(filename, uid):
 	db = safeevalnew.safe_eval(dbstr)
 	#print db[filename]
 	#print filename
-	if (db[filename]["host"] == uid):
-		print "Found entry in DB"
-		return 1
-	else:
-		print "Not in db"
-		return 0
+	for i in range(len(db[filename])):
+		if (db[filename][i]["host"] == uid):
+			print "Found entry in DB"
+			return 1
+		else:
+			print "Not in db"
+			return 0
 
 def recv_uid(s):
 	#Argument is socket
@@ -94,6 +95,8 @@ def db_cleanup(db):
 def db_sync(newdb):
 	print "Opening old DB (Reading)"
 	tempdb = {}
+	newdbhosts = []
+	olddbhosts = []
 	try:
 		g = open ("db", "r")
 		olddb = safeevalnew.safe_eval(g.read())
@@ -107,24 +110,100 @@ def db_sync(newdb):
 	print "Syncing old with recv'd DB"
 	#Update where newdb's date-modified is newer
 	inter = set(newdb.iterkeys()).intersection(set(olddb.iterkeys())) #Find common entries
-	#print inter
-	for i in inter:
-		if (olddb[i]["host"] == newdb[i]["host"]):
-			if (olddb[i]["date-modified"] < newdb[i]["date-modified"]):
-				print "Updating Old entry"
-				tempdb[i] = {"date-modified": newdb[i]["date-modified"], "host": newdb[i]["host"]}
-			elif (olddb[i]["date-modified"] >= newdb[i]["date-modified"]):
-				tempdb[i] = {"date-modified": olddb[i]["date-modified"], "host": newdb[i]["host"]}
+
+	#for i in inter:
+		#if (olddb[i]["host"] == newdb[i]["host"]):
+			#if (olddb[i]["date-modified"] < newdb[i]["date-modified"]):
+				#print "Updating Old entry"
+				#tempdb[i] = {"date-modified": newdb[i]["date-modified"], "host": newdb[i]["host"]}
+			#elif (olddb[i]["date-modified"] >= newdb[i]["date-modified"]):
+				#tempdb[i] = {"date-modified": olddb[i]["date-modified"], "host": newdb[i]["host"]}
 	
-	c = set(newdb).union(set(olddb))
-	d = set(newdb).intersection(set(olddb))
-	uninter = c-d
+	for i in inter:
+		for j in range(len(olddb[i])):
+			olddbhosts.append(olddb[i][j]["host"])
+			tempdb[i] = []
+			for k in range(len(newdb[i])):
+				newdbhosts.append(newdb[i][k]["host"])
+				if (olddb[i][j]["host"] == newdb[i][k]["host"]):
+					if (olddb[i][j]["date-modified"] < newdb[i][k]["date-modified"]):
+						if (olddb[i][j]["host"] == newdb[i][k]["host"]):
+							print "Entry", i, "is newer in new"
+							tempdb[i].append (newdb[i][k])
+					elif (olddb[i][j]["date-modified"] >= newdb[i][k]["date-modified"]):
+						if (olddb[i][j]["host"] == newdb[i][k]["host"]):
+							print "olddb is newer"
+							tempdb[i].append(olddb[i][j])
+					
+		#Add in entries from other hosts for same file
+		#This needs to be moved into the first for loop
+		#Get rid of duplicates
+		newdbhosts.sort()
+		last = newdbhosts[-1]
+		for t in range(len(newdbhosts)-2, -1, -1):
+			if (last == newdbhosts[t]):
+				del newdbhosts[t]
+			else:
+				last = newdbhosts[t]
+		print newdbhosts
+
+		olddbhosts.sort()
+		last = olddbhosts[-1]
+		for t in range(len(olddbhosts)-2, -1, -1):
+			if (last == olddbhosts[t]):
+				del olddbhosts[t]
+			else:
+				last = olddbhosts[t]
+		print olddbhosts
+
+		#Hosts to be added to the same file but different host
+		commonhosts = list (set (newdbhosts) & set (olddbhosts))
+		uniquehosts = list (set(newdbhosts) - set (commonhosts))
+		print "UniqueHosts", uniquehosts
+
+		#Add entries listed in uniquehosts
+		for k in range(len(newdb[i])):
+			for l in range(len(uniquehosts)):
+				if (newdb[i][k]["host"] == uniquehosts[l]):
+					print "Adding new entry for file", i
+					tempdb[i].append (newdb[i][k])
+					
+	print tempdb
+	
+	#Add new file (not host) Entries
+	#This implementation is BAD because it includes files from both DBs
+		#c = set(newdb).union(set(olddb))
+		#d = set(newdb).intersection(set(olddb))
+		#uninter = c-d
 	#uninter = set(newdb.iterkeys()) - set(inter)
 	#print uninter
 	#print newdb
-	for i in uninter:
-		tempdb[i] = newdb[i]
+		#for i in uninter:
+			#tempdb[i] = newdb[i]
 		
+
+	#Add olddb entries NOT present in newdb
+	c = set(newdb).intersection(set(olddb))
+	d = set(olddb)
+	oldunique = d-c
+
+	for a in oldunique:
+		tempdb[i] = olddb[i]
+	
+	#Add newdb entries NOT present in olddb
+	e = set (newdb)
+	newunique = e-c
+
+	for b in newunique:
+		tempdb[i] = newdb[i]
+
+	
+	#Save newly constructed db
+	g = open("db", "w")
+	g.write(str(tempdb))
+	g.close()
+	print "Sync'd DB Saved"
+
 
 #Variables
 UID_LENGTH = 46
