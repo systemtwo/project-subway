@@ -85,6 +85,9 @@ def send_db(clientsocket, db):
 def send_file(clientsocket):
 	clientsocket.send("GO_AHEAD")
 	fname = clientsocket.recv(4096) # Recieve Filename
+	if (fname == "NEVER_MIND"):
+		print "Got NEVER_MIND\n"
+		return
 	#fname = "cache/" + fname
 	print fname
 
