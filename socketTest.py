@@ -205,7 +205,7 @@ def db_sync(newdb):
 
 	for a in oldunique:
 		print "Adding from olddb (oldunique)", a
-		tempdb[i] = olddb[i]
+		tempdb[a] = olddb[a]
 	
 	#Add newdb entries NOT present in olddb
 	e = set (newdb)
@@ -213,7 +213,7 @@ def db_sync(newdb):
 
 	for b in newunique:
 		print "Adding from newdb (newunique)", b
-		tempdb[i] = newdb[i]
+		tempdb[b] = newdb[b]
 
 	
 	#Save newly constructed db
