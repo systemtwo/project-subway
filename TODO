@@ -1,13 +1,14 @@
 Add Broadcasting and node detection
 Add Proxy interface
-Have the DB be lookup'd (Right now, it does nothing)
+[DONE] Have the DB be lookup'd (Right now, it does nothing)
 Also Have Ip-> UUID in the DB as well and have files listed under a UUID
-Fix the file Extention showing up in the db
+[DONE] Fix the file Extention showing up in the db
 Have a IP DB done
 Change DB structure to
 {hash:{host:"uid", last-modified:437894}}
-Have the node respond a FOUND or NOT_FOUND if the file exists in cache
+Have the node respond a FOUND or NOT_FOUND if the file exists in cache (And exists in DB)
 Have the client delete entry in db if the node does not have the file
-New DB is flawed, change it to {hash:[{date-modified:342324, host:uid}{date-modified:38294, host:uid}]}?
+[DONE] New DB is flawed, change it to {hash:[{date-modified:342324, host:uid}{date-modified:38294, host:uid}]}?
 Add function to find out internet conditions, either by speedtest server or like ants (possitive feedback of downloads - ie. if there are lots of clients downloading, then download conditions must be good?)
 Add db_cleanup to db_sync() (in the part where it compares date-modified)
+Add reverse DB_REQ so that the server can sync with client
