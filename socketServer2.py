@@ -7,6 +7,7 @@ import socket
 import os
 import uuid
 import time
+import serverdbsync
 
 def client_thread(s):
 	s.send("Hello")
@@ -152,6 +153,7 @@ while 1:
 		#Rebuild DB
 		print "Rebuilding DB"
 		db = build_db(uid)
+		db = serverdbsync.db_sync(db)
 		print "Got call for db"
 		send_db(clientsocket, db)
 	elif (req == "FILE_REQ"):

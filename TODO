@@ -12,3 +12,5 @@ Have the client delete entry in db if the node does not have the file
 Add function to find out internet conditions, either by speedtest server or like ants (possitive feedback of downloads - ie. if there are lots of clients downloading, then download conditions must be good?)
 Add db_cleanup to db_sync() (in the part where it compares date-modified)
 Add reverse DB_REQ so that the server can sync with client
+Have the build_db() in server sync instead of initialize from local files, for faster propagation
+Have the serverdbsync routine actually save the file to the db?
