@@ -25,9 +25,12 @@ def db_lookup(filename, uid):
 		if (db[filename][i]["host"] == uid):
 			print "Found entry in DB"
 			return 1
-		else:
-			print "Not in db"
-			return 0
+		#else:
+			#if (i == len(db[filename])):
+				#print db
+				#print "Not in db"
+				#return 0
+	print "Not found!"
 
 def recv_uid(s):
 	#Argument is socket
@@ -124,10 +127,11 @@ def db_sync(newdb):
 				#tempdb[i] = {"date-modified": olddb[i]["date-modified"], "host": newdb[i]["host"]}
 	
 	for i in inter:
+		filehostsarray = [] #This is the array which the hosts for ONE file should be stored in
+		tempdb[i] = []
 		for j in range(len(olddb[i])):
-			print i,j
+			print olddb[i][j]
 			olddbhosts.append(olddb[i][j]["host"])
-			tempdb[i] = []
 			for k in range(len(newdb[i])):
 				newdbhosts.append(newdb[i][k]["host"])
 				if (olddb[i][j]["host"] == newdb[i][k]["host"]):
@@ -143,12 +147,15 @@ def db_sync(newdb):
 						print "Adding entry for host:", olddb[i][j]["host"]
 						tempdb[i].append(olddb[i][j])
 						print "Entry appended from index", j
-						print tempdb
+						#print tempdb
+						print "!!!!!!!!!!!!!"
+						print "filehostsarray is currently"
+						print filehostsarray
 						print "**********"
-						print tempdb[i]
-						print i,j
-						tempdb[i].append(olddb[i][j])
-						print tempdb[i]
+						#print tempdb[i]
+						#print i,j
+						#tempdb[i].append(olddb[i][j])
+						#print tempdb[i]
 					
 		#Add in entries from other hosts for same file
 		#Get rid of duplicates
