@@ -114,7 +114,9 @@ def send_file(clientsocket):
 		#Correct Responce
 		sentbytes = clientsocket.send(f.read())
 		print "Sent!", address
-		print sentbytes
+		print sentbytes 
+		f.seek(0,2)
+		print "Total size:", f.tell()
 		print "Done."
 		print " " #Empty Line
 	clientsocket.close()
