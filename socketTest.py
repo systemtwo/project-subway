@@ -197,7 +197,7 @@ def db_sync(newdb):
 				last = olddbhosts[t]
 		print olddbhosts
 
-		#Hosts to be added to the same file but different host
+		#Hosts to be added to the same file but different host (Within newdb)
 		commonhosts = list (set (newdbhosts) & set (olddbhosts))
 		uniquehosts = list (set(newdbhosts) - set (commonhosts))
 		print "UniqueHosts", uniquehosts
@@ -209,6 +209,15 @@ def db_sync(newdb):
 					if (newdb[i][k]["host"] == uniquehosts[l]):
 						print "Adding new entry for file", i
 						tempdb[i].append (newdb[i][k])
+
+		olduniquehosts = list (set(olddbhosts) - set (commonhosts))
+		if (len (olduniquehosts) > 0):
+			for k in range (len(olddb[i])):
+				for l in range(len(olduniquehosts)):
+					if (olddb[i][k]["host"] == olduniquehosts[l]):
+						print "Copying old entry for file", i
+						tempdb[i].append (olddb[i][k])
+
 		print "\n\n=========="
 		# Clean up the newdbhosts and olddbhosts arrays
 		del olddbhosts[:]
