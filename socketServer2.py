@@ -149,6 +149,9 @@ while 1:
 		print "Got Call for UID"
 		send_uid(clientsocket)
 	elif (req == "DB_REQ"):
+		#Rebuild DB
+		print "Rebuilding DB"
+		db = build_db(uid)
 		print "Got call for db"
 		send_db(clientsocket, db)
 	elif (req == "FILE_REQ"):
