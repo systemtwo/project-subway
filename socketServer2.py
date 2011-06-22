@@ -112,8 +112,9 @@ def send_file(clientsocket):
 	clientsocket.send(str(os.path.getsize(fname)))
 	if (clientsocket.recv(8) == "GOT_SIZE"):
 		#Correct Responce
-		clientsocket.send(f.read())
+		sentbytes = clientsocket.send(f.read())
 		print "Sent!", address
+		print sentbytes
 		print "Done."
 		print " " #Empty Line
 	clientsocket.close()
@@ -164,6 +165,7 @@ while 1:
 		print "Got call for File"
 		send_file(clientsocket)
 	elif (req == "IPDB_REQ"):
+		#Sync IP -> uid db
 		pass
 
 

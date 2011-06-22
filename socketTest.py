@@ -95,6 +95,8 @@ def recv_file(s, fhash, nodeuid):
 	if (len(size) == 0):
 		print "ERROR: No Size Returned from server"
 
+	print "Size of file (bytes):", size
+
 	#Send Responce
 	s.send("GOT_SIZE")
 
@@ -241,6 +243,8 @@ def db_sync(newdb):
 	c = set(newdb).intersection(set(olddb))
 	d = set(olddb)
 	oldunique = d-c
+
+	print "Copying file entries (not hosts) not existant in tempdb to tempdb from olddb and newdb"
 
 	for a in oldunique:
 		print "Adding from olddb (oldunique)", a
