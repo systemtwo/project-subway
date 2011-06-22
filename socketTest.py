@@ -7,10 +7,19 @@ import sys
 import hashlib
 import safeevalnew
 
+def ip_lookup():
+	#Should be like [(IP, UID), (IP, UID)]
+	f = open ("ipdb", "r")
+	pass
+
 def create_socket():
 	#time.sleep(2)
+
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.connect((socket.gethostname(), 7000))
+	if (len(sys.argv) > 1):
+		s.connect((sys.argv[1], 7000))
+	else:
+		s.connect((socket.gethostname(), 7000))
 	return s
 
 def db_lookup(filename, uid):
