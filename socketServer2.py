@@ -8,6 +8,7 @@ import os
 import uuid
 import time
 import serverdbsync
+import random
 
 def client_thread(s):
 	s.send("Hello")
@@ -39,7 +40,8 @@ def build_db(uid):
 	for i in dirlist:
 		item = os.stat("cache/" + i)
 		#minidb = [{"date-modified": item.st_mtime, "host": uid}, {"date-modified": 37383302, "host": "otherhost"}]
-		minidb = [{"date-modified": item.st_mtime, "host": uid}]
+		#minidb = [{"date-modified": item.st_mtime, "host": uid}]
+		minidb = [{"date-modified": item.st_mtime, "host": uid}, {"date-modified": random.randint(0,10000000), "host": "otherhost"}]
 		db[str(i)] = minidb
 	return db
 
@@ -154,6 +156,7 @@ while 1:
 		#Rebuild DB
 		print "Rebuilding DB"
 		db = build_db(uid)
+		#Sync script has errors
 		db = serverdbsync.db_sync(db)
 		print "Got call for db"
 		send_db(clientsocket, db)

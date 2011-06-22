@@ -11,11 +11,16 @@ def db_sync(newdb):
 		olddb = safeevalnew.safe_eval(g.read())
 		g.close()
 	except IOError:
-		print "No Existsing DB found"
-		return newdb
+		#File does not exist, so just dump all what you have in file
+		g = open ("db", "w")
+		g.write(str(newdb))
+		g.close
+		return 1
 	print "Syncing old with recv'd DB"
+	print newdb
 	#Update where newdb's date-modified is newer
 	inter = set(newdb.iterkeys()).intersection(set(olddb.iterkeys())) #Find common entries
+	print inter
 
 	#for i in inter:
 		#if (olddb[i]["host"] == newdb[i]["host"]):
@@ -28,11 +33,16 @@ def db_sync(newdb):
 	for i in inter:
 		filehostsarray = [] #This is the array which the hosts for ONE file should be stored in
 		tempdb[i] = []
+		print "Working on", i
+		print "Operating Data", len(olddb[i]), len(newdb[i])
+		print olddb[i]
+		print newdb
 		for j in range(len(olddb[i])):
 			print olddb[i][j]
 			olddbhosts.append(olddb[i][j]["host"])
 			for k in range(len(newdb[i])):
 				newdbhosts.append(newdb[i][k]["host"])
+				print "On Loop", i, j, k
 				if (olddb[i][j]["host"] == newdb[i][k]["host"]):
 					if (olddb[i][j]["date-modified"] < newdb[i][k]["date-modified"]):
 						#if (olddb[i][j]["host"] == newdb[i][k]["host"]):
@@ -47,9 +57,9 @@ def db_sync(newdb):
 						tempdb[i].append(olddb[i][j])
 						print "Entry appended from index", j
 						#print tempdb
-						print "!!!!!!!!!!!!!"
-						print "filehostsarray is currently"
-						print filehostsarray
+						#print "!!!!!!!!!!!!!"
+						#print "filehostsarray is currently"
+						#print filehostsarray
 						print "**********"
 						#print tempdb[i]
 						#print i,j
@@ -89,6 +99,9 @@ def db_sync(newdb):
 						print "Adding new entry for file", i
 						tempdb[i].append (newdb[i][k])
 		print "\n\n=========="
+		# Clean up the newdbhosts and olddbhosts arrays
+		del olddbhosts[:]
+		del newdbhosts[:]
 					
 	print tempdb
 	
@@ -120,7 +133,6 @@ def db_sync(newdb):
 	for b in newunique:
 		print "Adding from newdb (newunique)", b
 		tempdb[b] = newdb[b]
-
 	
 	#Save newly constructed db
 	print "Sync'd DB Saved"
