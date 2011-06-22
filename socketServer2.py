@@ -98,7 +98,7 @@ def send_file(clientsocket):
 	#This chunk finds and appends a file extention (Macs, sometimes if you touch the file)
 	try:
 		print "Trying to open..."
-		f = open(fname)
+		f = open(fname, "rb")
 	except IOError:
 		dirlist =  os.listdir("cache/")
 		for i in dirlist:
