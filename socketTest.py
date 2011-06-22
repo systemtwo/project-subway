@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# Safe Eval Script from Michael Spencer 
 
 import socket
 import time
@@ -90,7 +91,10 @@ def recv_file(s, fhash, nodeuid):
 
 	#Recv File
 	i = s.recv(int(size))
+	print "Saving file to clientcache/"
+	f = open("clientcache/" + fhash, "wb")
 	f.write(i)
+	f.close()
 	s.close()
 	print "Done"
 
