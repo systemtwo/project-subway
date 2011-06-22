@@ -38,7 +38,8 @@ def build_db(uid):
 	dirlist = os.listdir("cache")
 	for i in dirlist:
 		item = os.stat("cache/" + i)
-		minidb = [{"date-modified": item.st_mtime, "host": uid}, {"date-modified": 37383302, "host": "otherhost"}]
+		#minidb = [{"date-modified": item.st_mtime, "host": uid}, {"date-modified": 37383302, "host": "otherhost"}]
+		minidb = [{"date-modified": item.st_mtime, "host": uid}]
 		db[str(i)] = minidb
 	return db
 
