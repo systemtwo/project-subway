@@ -112,7 +112,7 @@ def send_file(clientsocket):
 	clientsocket.send(str(os.path.getsize(fname)))
 	if (clientsocket.recv(8) == "GOT_SIZE"):
 		#Correct Responce
-		sentbytes = clientsocket.send(f.read())
+		sentbytes = clientsocket.sendall(f.read())
 		print "Sent!", address
 		print sentbytes 
 		f.seek(0,2)
