@@ -105,7 +105,7 @@ def send_file(clientsocket):
 			if (i.find(fname) > -1):
 				#print "Found it!", i
 				fname = "cache/" + i
-				f = open(fname, "r")
+				f = open(fname, "rb")
 
 
 	#Send File Size
