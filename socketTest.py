@@ -67,7 +67,14 @@ def recv_db(s):
 
 	#Recieve DB
 	print "Waiting for DB_DATA..."
-	dbstr = s.recv(int(dbsize))
+	data = s.recv(1024)
+	while (len(data) < int(dbsize)):
+		sdata = s.recv(1024)
+		if (len(sdata) > 0):
+			data = data + sdata
+		else:
+			s.close()
+	dbstr = data
 	print "DB Sync'd"
 	#print "DB_DATA:", dbstr
 	print "Turning DB_DATA to usable form..."
@@ -101,12 +108,26 @@ def recv_file(s, fhash, nodeuid):
 	s.send("GOT_SIZE")
 
 	#Recv File
-	i = s.recv(int(size))
+	#Testing bit
+	#print len(s.recv(int(size)))
+	#i = s.recv(int(size))
+	data = s.recv(1024)
+	while (len(data) < int(size)):
+		sdata = s.recv(1024)
+		if (len(sdata) > 0):
+			data = data + sdata
+		else:
+			s.close()
+
+
 	print "Saving file to clientcache/"
 	f = open("clientcache/" + fhash, "wb")
-	f.write(i)
+	f.write(data)
 	f.close()
-	s.close()
+	#Verify the size
+	f = open ("clientcache/"+ fhash, "rb")
+	print len(f.read())
+	f.close()
 	print "Done"
 
 def db_cleanup(db):
