@@ -5,10 +5,10 @@ import time
 
 #def log_request(ip, time, file):
 def log_request(ip, file):
-	time = time.time()
+	curtime = time.time()
 	f = open ("log.txt", "a")
-	time = str(time)
-	logstr = ip + " " + str(int(time)) + " " + file + "\n"
+	curtime = str(curtime)
+	logstr = ip + " " + curtime + " " + file + "\n"
 	f.write (logstr)
 
 def get_all_ips(logfile="log.txt", date="9999999999999999"):
@@ -20,13 +20,21 @@ def get_all_ips(logfile="log.txt", date="9999999999999999"):
 		minilist = line.split(" ")
 		biglist.append((minilist[0], minilist[1]))
 	print biglist
+	return biglist
+
+def gen_bogus_log():
+	import random
+	for i in range(20):
+		ip = str(random.randint(0,256)) + "." + str(random.randint(0,256)) + "." + str(random.randint(0,256)) + "." + str(random.randint(0,256))     
+		file = str(random.randint(0,99999999999999999))
+		
 
 
 if __name__ == "__main__":
 	import random
 	f = open("testlog", "a")
 	for i in range(50):
-		ip = str(random.randint(0,255)) + "." + str(random.randint(0,255)) + "." + str(random.randint(0,255)) + "." + str(random.randint(0,255))
+		ip = str(random.randint(0,2)) + "." + str(random.randint(0,2)) + "." + str(random.randint(0,2)) + "." + str(random.randint(0,2))
 		time = random.randint(0,9999999)
 		file = random.randint(1000000,999999999)
 		f.write(ip+" "+str(time)+" "+str(file)+"\n")

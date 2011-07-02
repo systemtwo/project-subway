@@ -9,6 +9,7 @@ import uuid
 import time
 import serverdbsync
 import random
+import logops
 
 def client_thread(s):
 	s.send("Hello")
@@ -87,9 +88,13 @@ def send_db(clientsocket, db):
 	print ""
 	
 
-def send_file(clientsocket):
+def send_file(clientsocket, addr):
 	clientsocket.send("GO_AHEAD")
 	fname = clientsocket.recv(4096) # Recieve Filename
+
+	#Log Request
+	logops.log_request(addr[0], fname)
+
 	if (fname == "NEVER_MIND"):
 		print "Got NEVER_MIND\n"
 		return
@@ -151,12 +156,19 @@ while 1:
 	print "Socket Accepted"
 	print time.strftime("%d %b %Y %H:%M:%S", time.localtime())
 
+
 	#Detect Requests
 	req = clientsocket.recv(1000000)
 	if (req == "UID_REQ"):
+		#Log Request
+		logops.log_request(address[0], "UID_REQ")
+
 		print "Got Call for UID"
 		send_uid(clientsocket)
 	elif (req == "DB_REQ"):
+		#Log Request
+		logops.log_request(address[0], "DB_REQ")
+
 		#Rebuild DB
 		print "Rebuilding DB"
 		db = build_db(uid)
@@ -165,8 +177,9 @@ while 1:
 		print "Got call for db"
 		send_db(clientsocket, db)
 	elif (req == "FILE_REQ"):
+		#Log Request in function
 		print "Got call for File"
-		send_file(clientsocket)
+		send_file(clientsocket, address)
 	elif (req == "IPDB_REQ"):
 		#Sync IP -> uid db
 		pass
