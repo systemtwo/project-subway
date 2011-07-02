@@ -18,7 +18,7 @@ def get_all_ips(logfile="log.txt", date="9999999999999999"):
 	biglist = []
 	for line in f:
 		minilist = line.split(" ")
-		biglist.append((minilist[0], minilist[1]))
+		biglist.append((minilist[0], minilist[1].rstrip("\n")))
 	print biglist
 	return biglist
 

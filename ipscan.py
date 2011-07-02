@@ -22,7 +22,7 @@ def get_list():
 	biglist = []
 	for line in f:
 		minilist = line.split(",")
-		biglist.append((minilist[0], minilist[1]))
+		biglist.append((minilist[0], minilist[1].rstrip("\n")))
 	return biglist
 
 
@@ -41,7 +41,7 @@ def sanitize_todo():
 	biglist = []
 	for line in f:
 		minilist = line.split(",")
-		biglist.append((minilist[0], minilist[1]))
+		biglist.append((minilist[0], minilist[1].rstrip("\n")))
 	
 	#Remove duplicates
 	biglist.sort()
@@ -68,6 +68,7 @@ def sanitize_todo():
 
 def do_todo():
 	"""Gets a TODO list and maps their uids"""
+	#Should be in format <IP> <UID>
 	iplist = []
 	list = get_list()
 	for i in range(len(list)):
@@ -83,8 +84,8 @@ def do_todo():
 		f = open ("ipdb.txt", "r")
 		biglist = []
 		for line in f:
-			minilist = line.split(",")
-			biglist.append((minilist[0], minilist[1]))
+			minilist = line.split(" ")
+			biglist.append((minilist[0], minilist[1].rstrip("\n")))
 		combined = set.union(set(biglist), set(iplist))
 		totallist = list(combined)
 		f.close()
