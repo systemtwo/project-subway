@@ -49,7 +49,8 @@ def build_db(uid):
 def print_info(uid):
 	print "Running on:\t\t", socket.gethostname(), "-", socket.gethostbyname(socket.gethostname())
 	print "Running with UUID:\t", uid
-	print time.strftime("%d %b %Y %H:%M:%S", time.localtime())
+	print time.strftime("%d %b %Y %H:%M:%S", time.gmtime(time.time())), "(Local time:", time.strftime("%d %b %Y %H:%M:%S", time.localtime()), ")"
+	print "Note all further time values PRINTED will be in local time"
 
 def send_uid(clientsocket):
 	#Send this node's uid to client

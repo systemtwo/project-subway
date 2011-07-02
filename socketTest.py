@@ -6,6 +6,8 @@ import time
 import sys
 import hashlib
 import safeevalnew
+import logops
+import ipscan 
 
 def ip_lookup():
 	#Should be like [(IP, UID), (IP, UID)]

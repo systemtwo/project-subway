@@ -1,10 +1,14 @@
 #! /usr/bin/env python
 #Log Operations for Project Subway (Getting IPs from logs and write all ops to log
 
-def log_request(ip, time, file):
+import time
+
+#def log_request(ip, time, file):
+def log_request(ip, file):
+	time = time.time()
 	f = open ("log.txt", "a")
 	time = str(time)
-	logstr = ip + " " + time + " " + file + "\n"
+	logstr = ip + " " + str(int(time)) + " " + file + "\n"
 	f.write (logstr)
 
 def get_all_ips(logfile="log.txt", date="9999999999999999"):
@@ -14,7 +18,7 @@ def get_all_ips(logfile="log.txt", date="9999999999999999"):
 	biglist = []
 	for line in f:
 		minilist = line.split(" ")
-		biglist.append(minilist[0])
+		biglist.append((minilist[0], minilist[1]))
 	print biglist
 
 
