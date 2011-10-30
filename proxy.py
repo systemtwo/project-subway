@@ -10,15 +10,18 @@ class MyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
 	print threading.currentThread().getName()
 	data = urllib.urlopen(self.path)
+	d = data.read()
 
 	hasher = hashlib.sha256()
 	hasher.update(self.path)
 	fhash = hasher.hexdigest()
 	
-	f = open("cache/"+fhash, "w")
-	f.write(data.read())
-	f.close()
-	f = open("cache/"+fhash, "r")
+	if (self.path.endswith(".jpg") or self.path.endswith(".png") or self.path.endswith(".gif") or self.path.endswith(".css") or self.path.endswith(".js")):
+		f = open("cache/"+fhash, "w")
+		f.write(data.read())
+		f.close()
+		f = open("cache/"+fhash, "r")
+		d = f.read()
 
 	self.send_response(200)
 	if (self.path.endswith(".css")):
@@ -26,7 +29,7 @@ class MyHandler(BaseHTTPRequestHandler):
 	else:
 		self.send_header('Content-type',	'text/html')
 	self.end_headers()
-	self.wfile.write(f.read())
+	self.wfile.write(d)
 	f.close()
 	return
 
