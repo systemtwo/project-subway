@@ -38,30 +38,6 @@ class MyHandler(BaseHTTPRequestHandler):
 		length = int(self.headers['content-length'])
 		data = self.rfile.read(length)
 		data = data.split('&')
-		ndata = {}
-		tdict = {}
-		for i in data:
-			a = i.split('=')
-			tdict[a[0]] = a[1]
-
-		if (os.path.isfile("data/"+tdict['title'])):
-			#file Exists
-			self.send_response(200)
-			self.send_header('Content-type',	'text/html')
-			self.end_headers()
-			self.wfile.write("<html>Pick another title</html>")
-			
-		else:
-			f = open("data/"+tdict['title'], "a")
-			f.write(tdict['txt'])
-			f.close()
-			self.send_response(200)
-			self.send_header('Content-type',	'text/html')
-			self.end_headers()
-			self.wfile.write("<html>Submitted</html>")
-			print "Submitted Announcement", tdict['title']
-		
-		return
 	
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 	"""Handle requests asynchronously"""
