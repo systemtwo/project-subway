@@ -288,6 +288,16 @@ def db_sync(newdb):
 	g.close()
 	print "Sync'd DB Saved"
 
+def get_fileid(fname):
+	if (fname == None):
+		return
+	hasher = hashlib.sha256()
+	hasher.update(fname)
+	fhash = hasher.hexdigest()
+	return fhash
+
+
+
 
 #Variables
 UID_LENGTH = 46
