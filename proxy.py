@@ -1,13 +1,9 @@
-#Copyright Jon Berg , turtlemeat.com
-
-import string,cgi,time
 from os import curdir, sep, path
-import os.path
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-import urllib
 from SocketServer import ThreadingMixIn
 import threading
-#import pri
+import urllib
+import hashlib
 
 class MyHandler(BaseHTTPRequestHandler):
 
@@ -15,13 +11,23 @@ class MyHandler(BaseHTTPRequestHandler):
 	print threading.currentThread().getName()
 	data = urllib.urlopen(self.path)
 
+	hasher = hashlib.sha256()
+	hasher.update(self.path)
+	fhash = hasher.hexdigest()
+	
+	f = open("cache/"+fhash, "w")
+	f.write(data.read())
+	f.close()
+	f = open("cache/"+fhash, "r")
+
 	self.send_response(200)
 	if (self.path.endswith(".css")):
 		self.send_header('Content-type', 'text/css')
 	else:
 		self.send_header('Content-type',	'text/html')
 	self.end_headers()
-	self.wfile.write(data.read())
+	self.wfile.write(f.read())
+	f.close()
 	return
 
     def do_POST(self):
