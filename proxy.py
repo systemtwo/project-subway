@@ -16,11 +16,13 @@ class MyHandler(BaseHTTPRequestHandler):
 	hasher.update(self.path)
 	fhash = hasher.hexdigest()
 	
-	#if (self.path.endswith(".jpg") or self.path.endswith(".png") or self.path.endswith(".gif") or self.path.endswith(".css") or self.path.endswith(".js")):
-	f = open("cache/"+fhash, "w")
-	f.write(d)
-	f.close()
-	f = open("cache/"+fhash, "r")
+	if (self.path.endswith(".jpg") or self.path.endswith(".png") or self.path.endswith(".gif") or self.path.endswith(".css") or self.path.endswith(".js")):
+		f = open("cache/"+fhash, "w")
+		f.write(d)
+		f.close()
+		f = open("cache/"+fhash, "r")
+		d = f.read()
+		f.close()
 
 	self.send_response(200)
 	if (self.path.endswith(".css")):
@@ -28,8 +30,7 @@ class MyHandler(BaseHTTPRequestHandler):
 	else:
 		self.send_header('Content-type',	'text/html')
 	self.end_headers()
-	self.wfile.write(f.read())
-	f.close()
+	self.wfile.write(d)
 	return
 
     def do_POST(self):
