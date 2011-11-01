@@ -4,14 +4,13 @@ from SocketServer import ThreadingMixIn
 import threading
 import urllib
 import hashlib
+import clientapi
 
 #TODO
 #Have a DO_NOT_CACHE list
 #Have a DO_NOT_VISIT list (Blocked sites, NSFW things)
 
 
-def getFileFromSubway(hash):
-	return None
 
 
 class BetterUrllib (urllib.URLopener):
@@ -39,7 +38,7 @@ class MyHandler(BaseHTTPRequestHandler):
 			#self.bytessaved += len(d)
 		except IOError, e:
 			## Try getting file from subway
-			subfile = getFileFromSubway(fhash)
+			subfile = clientapi.getFileFromSubway(fhash)
 			if (subfile == None):
 				## Get the file thru the internet
 				data = urllib.urlopen(self.path)

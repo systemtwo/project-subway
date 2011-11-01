@@ -40,6 +40,7 @@ def getFileFromSubway(hash):
 			socketTest.recv_file(s, hash, curr['host'])
 		else:
 			## Everything has failed. There is no file in the network
+			return None
 	
 def dbFileLookup(hash):
 	db = open("db", "r").read()
