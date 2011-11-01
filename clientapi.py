@@ -33,9 +33,18 @@ def dbFileLookup(hash):
 
 def makeSocket(uid):
 	## Get IP of the host
-	##### INCOMPLETE #####
+	ipdb = open("ipdb", "r").read()
+	ipdb = ipdb.split("\n")
+	minidict = {}
+	for i in ipdb:
+		i.split(" ")
+		minidict[i[0]] = i[1]
+	
+	if (minidict.has_key(uid)):
+		nodeip = minidict[uid][1]
+
 
 	## Make the socket
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.connect((ip, 7000))
+	s.connect((nodeip, 7000))
 	return s

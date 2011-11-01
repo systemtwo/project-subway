@@ -302,7 +302,7 @@ def get_fileid(fname):
 #Variables
 UID_LENGTH = 46
 
-for i in range(1):
+def main():
 	try:
 		fname = "dice.png"
 
@@ -340,7 +340,9 @@ for i in range(1):
 		recv_file(s, fhash, nodeuid)
 		#print "Got File"
 		s.close()
-		break
 
 	except KeyboardInterrupt:
 		sys.exit(0)
+
+if __name__ == "__main__":
+	main()
