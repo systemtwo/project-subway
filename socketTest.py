@@ -323,6 +323,8 @@ for i in range(1):
 		nodeuid = recv_uid(s)
 		print "Got UID from node"
 		s.close()
+		ipdb = open("ipdb", "a")
+		ipdn.write(nodeuid + " " + sys.argv[1])
 		
 
 		#Get DB
