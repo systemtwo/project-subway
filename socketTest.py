@@ -47,6 +47,7 @@ def db_lookup(filename, uid):
 def recv_uid(s):
 	#Argument is socket
 	#Recieve UID
+	s.send("UID_REQ")
 	nodeuid = s.recv(UID_LENGTH)
 	print "Connected to:", nodeuid 
 	s.send("UID_GOT_IT")
@@ -131,6 +132,9 @@ def recv_file(s, fhash, nodeuid):
 	print len(f.read())
 	f.close()
 	print "Done"
+
+def recv_ipdb(s):
+	pass
 
 def db_cleanup(db):
 	#Deletes any entries older than two weeks
@@ -319,12 +323,14 @@ def main():
 		#Get Uid
 		#Request UID
 		s = create_socket()
-		s.send("UID_REQ")
 		nodeuid = recv_uid(s)
 		print "Got UID from node"
 		s.close()
 		ipdb = open("ipdb", "a")
-		ipdn.write(nodeuid + " " + sys.argv[1])
+		if (len(sys.argv) == 1):
+			ipdb.write(nodeuid + " " + "localhost" + "\n")
+		else:
+			ipdb.write(nodeuid + " " + sys.argv[1] + "\n")
 		
 
 		#Get DB

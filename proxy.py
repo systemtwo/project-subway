@@ -37,15 +37,21 @@ class MyHandler(BaseHTTPRequestHandler):
 			f.close()
 			#self.bytessaved += len(d)
 		except IOError, e:
-			## Try getting file from subway
+			# Try getting file from subway
 			subfile = clientapi.getFileFromSubway(fhash)
 			if (subfile == None):
-				## Get the file thru the internet
-				data = urllib.urlopen(self.path)
-				d = data.read()
-				f = open("cache/"+fhash, "w")
-				f.write(d)
-				f.close()
+				# Get the file thru the internet
+				try:
+					data = urllib.urlopen(self.path)
+				except IOError, e:
+					print e.args
+			else:
+				# Get the subway file
+				pass
+			d = data.read()
+			f = open("cache/"+fhash, "w")
+			f.write(d)
+			f.close()
 	else:
 		data = urllib.urlopen(self.path)
 		d = data.read()
