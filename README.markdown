@@ -8,13 +8,17 @@ Typically, the connection between an internal network and an external network--s
 
 Design
 ------
-Each client is also a server. Servers broadcast their precense, and are then contacted by interested clients. After this initial connection, the databases are syncronized. As items are added or updated, this synconization continues.
+Each client is also a server. Servers are contacted by interested clients. After this initial connection, the databases are syncronized. As items are added or updated, this synconization continues.
 
     Server <---{resource list}---> Client
+
+A proxy is then built on top of the network (which operates separately, on a scheduled basis) which allows web browsers to access the resources. Local files are not retrieved by the network, but by direct proxy access.
 
 Sync Protocol
 -------------
 Packets look like this: 
+This is not right :( 
+It changed a lot, so don't use the following for any reference
 
  - Header: single byte
  - Length: short (2 bytes)
