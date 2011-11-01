@@ -16,6 +16,7 @@ Have the build_db() in server sync instead of initialize from local files, for f
 Have the serverdbsync routine actually save the file to the db?
 Add a two week timeout on IP->UID mappings
 Chomp off newlines
+Finish the clientAPI
 
 
 Done

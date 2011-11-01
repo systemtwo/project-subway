@@ -5,29 +5,48 @@ import threading
 import urllib
 import hashlib
 
+#TODO
+#Have a DO_NOT_CACHE list
+#Have a DO_NOT_VISIT list (Blocked sites, NSFW things)
+
+
+def getFileFromSubway(hash):
+	return None
+
+
+class BetterUrllib (urllib.URLopener):
+	version = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0"
+
 class MyHandler(BaseHTTPRequestHandler):
     bytessaved = 0
 
     def do_GET(self):
 	print threading.currentThread().getName()
+	print self.path
 
 	hasher = hashlib.sha256()
 	hasher.update(self.path)
 	fhash = hasher.hexdigest()
 
 	
-	if (self.path.endswith(".jpg") or self.path.endswith(".png") or self.path.endswith(".gif") or self.path.endswith(".css") or self.path.endswith(".js")):
+#	if (self.path.endswith(".jpg") or self.path.endswith(".png") or self.path.endswith(".gif") or self.path.endswith(".css") or self.path.endswith(".js")):
+	if (1):
 		try:
+			## Try getting file locally
 			f = open("cache/"+fhash, "r")
 			d = f.read()
 			f.close()
 			#self.bytessaved += len(d)
 		except IOError, e:
-			data = urllib.urlopen(self.path)
-			d = data.read()
-			f = open("cache/"+fhash, "w")
-			f.write(d)
-			f.close()
+			## Try getting file from subway
+			subfile = getFileFromSubway(fhash)
+			if (subfile == None):
+				## Get the file thru the internet
+				data = urllib.urlopen(self.path)
+				d = data.read()
+				f = open("cache/"+fhash, "w")
+				f.write(d)
+				f.close()
 	else:
 		data = urllib.urlopen(self.path)
 		d = data.read()
