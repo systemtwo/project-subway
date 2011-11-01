@@ -17,6 +17,7 @@ Have the serverdbsync routine actually save the file to the db?
 Add a two week timeout on IP->UID mappings
 Chomp off newlines
 Finish the clientAPI
+Get something to record IPs ->UID mappings
 
 
 Done
