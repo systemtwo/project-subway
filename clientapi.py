@@ -14,15 +14,33 @@ def getFileFromSubway(hash):
 				curr = i
 		## Get the file itself
 		s = makeSocket(curr['host'])
+		socketTest.recv_file(s, hash, curr['host'])
 
-
-	## If it is not there, force db to update
-	socketTest.recv_db(s)
-	## If file is nonexistant, return none
-
-	## If file is there, then query for the file
-
-
+	else:
+		## If it is not there, force db to update
+		ipdb = open("ipdb", "r").read()
+		ipdb = ipdb.split("\n")
+		minidict = {}
+		for i in ipdb:
+			i.split(" ")
+			s = makeSocket(i[0])
+			socketTest.recv_db(s)
+		## Try to get the file again
+		## Look if the file is in the database
+		flist = dbFileLookup(hash)
+		if (flist is not None):
+			## Get the newest file entry
+			curr = None # To hold the nodeuid (dict) with best date
+			curr = flist[0] # To hold something to compare with
+			for i in range(len(flist)):
+				if (i["date-modified"] > curr['date-modified']):
+					curr = i
+			## Get the file itself
+			s = makeSocket(curr['host'])
+			socketTest.recv_file(s, hash, curr['host'])
+		else:
+			## Everything has failed. There is no file in the network
+	
 def dbFileLookup(hash):
 	db = open("db", "r").read()
 	db = safeevalnew.safe_eval(db)
